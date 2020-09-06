@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            alert({{message}})
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="POST" action="submitdata" enctype="multipart/form-data">
+	<input type= "file" name="file" id="csv">
+	<input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
