@@ -1,6 +1,18 @@
 import pandas as pd
 import json
 
+"""
+Arguments: 
+    selected_graph: (String) Graph type (either boxplot or bargraph)
+
+Returns: 
+    pandas dataframe: Returns all plots extracted from entire data after filtering with constraints (AKA slices)
+
+Working: It will iterate through entire dataset and filter out data as per the input given
+Will store all required data for each plot like category, score, support, slices etc.
+
+"""
+
 def read_data(selected_graph):
     main_data = pd.read_csv(r"./data/allergyBoundelss.csv")
     data_point = pd.read_csv(r"./data/allergy_test.csv")
@@ -44,6 +56,24 @@ def read_data(selected_graph):
         
     return allplots
 
+"""
+Arguments:
+    curr: (int) Query index of the graph.
+    allplots: (pandas dataframe) All the plots (filtered on current slice)
+    drilled_dic: (dictionary) Initially drilling will be done on static value, but it can be changed to any available value.
+    pref: (String) Desired drill value if any.
+
+Returns: (dictionary)
+    Returns response which will be sent to server, and which will help server to render the graph.
+
+Working: It will first fetch the corresponding plot using current index (passed as a parameter) and will prepare response.
+
+Response will contain following things.
+    index: Which will be displayed on webpage
+    res: Actual Data
+    currcons: Current slice (which will be displayed on webpage)
+
+"""
 def prepare_response(curr, allplots, drilled_dic, pref):
     curr_plot = allplots[curr]
     category = curr_plot["first_attr"]
@@ -131,6 +161,18 @@ def prepare_response(curr, allplots, drilled_dic, pref):
     
     
     return final_res
+
+"""
+Same as above one, but will be used to prepare response for rendering box plots.
+
+Arguments:
+    curr: (int) index of plot which needs to be extracted
+    allplots: (pandas dataframe) entire dataset
+    
+Returns: (dictionary)
+    Returns response which will be sent to server, and which will help server to render the graph.
+    
+"""
 
 def prepare_box_response(curr, allplots):
     curr_plot = allplots[curr]
