@@ -6,6 +6,12 @@
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
 	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+	<script>
+		function getPlotType(graph, val){
+			document.getElementById("plottype").value = graph;
+			document.getElementById("dynamicbtn").innerHTML = val;
+		}
+	</script>
 </head>
 
 <body>
@@ -18,7 +24,7 @@
 					<h3 class="text-center">My Documents</h3>
 				</div>
 			</div>
-			<form method="POST" action="localhost:5000/submitdata" enctype="multipart/form-data">
+			<form method="POST" action="submitdata" enctype="multipart/form-data">
 				<div id="uploader">
 					<div class="row uploadDoc">
 						<div class="col-sm-3">
@@ -37,7 +43,17 @@
 				</div>
 				<div class="text-center">
 					<a class="btn btn-new"><i class="fa fa-plus"></i> Add new</a>
+					<input id="plottype" name="plottype" type="hidden"/>
+					<div class="dropdown">
+						<button id="dynamicbtn" onClick="return false;" class="dropbtn">Available Plots</button>
+							<div class="dropdown-content">
+								<a href="#" onClick="getPlotType('boxplot', 'Box Plot'); return false;">Box Plot</a>
+								<a href="#" onClick="getPlotType('bargraph', 'Bar Graph'); return false;">Bar Graph</a>
+							</div>
+					</div>
+					
 					<button type="submit" class="btn btn-next"><i class="fa fa-paper-plane"></i> Submit</button>
+					
 				</div>
 			</form>
 		</div>

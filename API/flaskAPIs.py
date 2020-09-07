@@ -1,12 +1,10 @@
 import pandas as pd
 import json
 
-def read_data():
+def read_data(selected_graph):
     main_data = pd.read_csv(r"./data/allergyBoundelss.csv")
     data_point = pd.read_csv(r"./data/allergy_test.csv")
     
-    selected_graph = "bargraph"
-
     bar_data = main_data[main_data.plottype == selected_graph]
     cnt = 0
     
@@ -133,3 +131,82 @@ def prepare_response(curr, allplots, drilled_dic, pref):
     
     
     return final_res
+
+def prepare_box_response(curr, allplots):
+    curr_plot = allplots[curr]
+    xcord = json.loads(curr_plot["xcord"])[0]
+    category = curr_plot["first_attr"]
+    score = curr_plot["score"]
+    support = curr_plot["support"]
+    current_slice = curr_plot['cons']
+    
+    sample_min = xcord[0]
+    sample_max = xcord[-1]
+    
+    cnt = 0
+    total = 0
+    
+    curr_data = curr_plot["data"]
+    outliers = []
+    
+    for index, data in curr_data.iterrows():
+        cnt += 1
+        val = data[category]
+        
+        total += val
+        
+        if(val<sample_min or val>sample_max):
+            outliers.append([0, val])
+            
+    mean = val/cnt
+    
+    res = {}
+    res['chart'] = {'type': 'boxplot'}
+    res['title'] = {'text': 'Box Plot of ' + category[0]+category[1:].lower() + " attribute: " + str(curr+1) + "/" + str(len(allplots))} 
+    res['legend'] = {'enabled': False}
+    res['xAxis'] = {'categories':[category], 'title': 'Attribute'}
+    res['yAxis'] = {
+                    'title': {'text' : 'Observations.'},
+                    'plotLines':[
+                            {'values':mean, 
+                             'color':'red',
+                             'width' : 1,
+                             'label': {
+                                 'text' : 'Mean: '+ str(mean),
+                                 'align': 'left',
+                                 'style':{'color':'grey'}
+                                 }
+                            }
+                    ]}
+    
+    res['subtitle'] = {'text': 'Score: ' + score + ", Support: " + support + ", Outliers: " + str(len(outliers)) + ", Slices: " + current_slice}
+    
+    first_dic = {
+        'name':'Observations',
+        'data': [xcord],
+        'tooltip' : {
+                'headerFormat' : '<em> Attribute {point.key}</em><br/>'
+        }
+    }
+    
+    second_dic = {
+        'name': 'Outliers',
+        'color': 'Highcharts.getOptions().colors[0]',
+        'type' : 'scatter',
+        'data' : outliers,
+        'marker' : {
+            'fillColor' : 'white',
+            'lineWidth' : 1,
+            'lineColor' : 'Highcharts.getOptions().colors[0]'
+        },
+        'tooltip' : {
+            'pointFormat' : 'Observation: {point.y}'
+        }
+    }
+    
+    res['series'] = [first_dic, second_dic]
+    
+    final_res = {"index":curr, "res":res}
+    final_res = json.dumps(final_res)
+    
+    return final_res    
