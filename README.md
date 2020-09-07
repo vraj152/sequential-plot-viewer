@@ -1,4 +1,4 @@
-# Sequential Plot Viewer
+# [Sequential Plot Viewer](https://bit.ly/3i9rGiI)
 
 * This project is developed as a part of qualifying test given by Professor Tomasz Imieliński, Rutgers University.
 * Task: 
