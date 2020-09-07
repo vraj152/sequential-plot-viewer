@@ -158,7 +158,7 @@ def prepare_box_response(curr, allplots):
         if(val<sample_min or val>sample_max):
             outliers.append([0, val])
             
-    mean = val/cnt
+    mean = round(total/cnt,4)
     
     res = {}
     res['chart'] = {'type': 'boxplot'}
@@ -168,7 +168,7 @@ def prepare_box_response(curr, allplots):
     res['yAxis'] = {
                     'title': {'text' : 'Observations.'},
                     'plotLines':[
-                            {'values':mean, 
+                            {'value':mean, 
                              'color':'red',
                              'width' : 1,
                              'label': {
