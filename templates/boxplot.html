@@ -160,6 +160,7 @@
 		
 		window.addEventListener('DOMContentLoaded', function (event) {
 			Highcharts.chart('container', data);
+			document.title = "Boxplot: " + parseInt(index+1).toString() + "/" + "258";
 		});
 		
 		function update_graph(obj){
@@ -169,6 +170,7 @@
 			data['series'][1]['marker']['lineColor'] = Highcharts.getOptions().colors[0];
 		
 			Highcharts.chart('container', data);
+			document.title = "Boxplot: " + parseInt(index+1).toString() + "/" + "258";
 		}
 		
 		function ajaxCall(inp){

@@ -3,8 +3,8 @@
 	<head>
 		<script type="text/javascript">
 			var obj = JSON.parse('{{res|safe}}');
-			console.log(obj);
-			var index = obj["index"]
+			
+			var index = obj["index"];
 			var data = obj["res"]
 			var val = obj["currcons"]
 			var addon = {
@@ -18,6 +18,8 @@
 				Highcharts.chart('container', data);
 				document.getElementById("current_slice").innerHTML = "current slice: " + val;
 				document.getElementById("current_slice").value = val;
+				document.title = "Bargraph: " + parseInt(index+1).toString() + "/" + "80";
+				
 			});
 			
 			function update_graph(obj){
@@ -36,6 +38,7 @@
 				Highcharts.chart('container', data);
 				document.getElementById("current_slice").innerHTML = "current slice: " + val;
 				document.getElementById("current_slice").value = val;
+				document.title = "Bargraph: " + parseInt(index+1).toString() + "/" + "80";
 			}
 			
 			function ajaxCall(inp){
