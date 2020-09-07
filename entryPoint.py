@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_cors import CORS
 import API.flaskAPIs as api
-import os
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +15,7 @@ def index():
 
 @app.route('/submitdata', methods=['POST'])
 def upload_file():
+    uploaded_file = request.files['file']
     return redirect(url_for("render"))
 
 @app.route('/render', methods=['GET'])
@@ -37,5 +37,4 @@ def update_drill():
     return res
 
 if __name__ == "__main__":
-    app.secret_key =  os.urandom(24)
     app.run(host='0.0.0.0')

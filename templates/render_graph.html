@@ -123,23 +123,28 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}" type="text/css">
 		<link rel="stylesheet" href="{{ url_for('static', filename='css.css') }} " type="text/css">
 		<link rel="stylesheet" href="{{ url_for('static', filename='hl-js.css') }} " as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;">
+		
 		<noscript><link rel="stylesheet" href="/demo/static/hl-js.css"></noscript>
-		<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome.min.css') }}" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;">
 		<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" type="text/css"></noscript>
-		<link rel="stylesheet" href="{{ url_for('static', filename='css') }}" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;">
 		<noscript><link href="//fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900&display=swap" rel="stylesheet" type="text/css"></noscript>
+		
+		<link rel="stylesheet" href="{{ url_for('static', filename='font-awesome.min.css') }}" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css') }}" as="style" onload="this.onload=null;this.rel=&#39;stylesheet&#39;">
 		<link href="{{ url_for('static', filename='outer.css') }}" rel="stylesheet" type="text/css">
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="Description" content="Highcharts Demo: Column with drilldown">
+		
 		<script type="text/javascript" async="" src="{{ url_for('static', filename='analytics.js') }}"></script>
 		<script src=" {{ url_for('static', filename='jquery.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='bootstrap.js') }}" defer=""></script>
 		<script src="{{ url_for('static', filename='modernizr.js') }}" type="text/javascript"></script>
 		<script id="Cookiebot" src=" {{ url_for('static', filename='uc.js') }} " data-cbid="8be0770c-8b7f-4e2d-aeb5-2cfded81e177" type="text/javascript" async="">
 		</script>
+		
 		<script type="text/javascript" async="" src="{{ url_for('static', filename='js') }}"></script>
 		<script async="" src="{{ url_for('static', filename='analytics.js') }}"></script>
+		
 		<script src="{{ url_for('static', filename='highcharts.js') }}"></script>
 		<script src="{{ url_for('static', filename='data.js') }}"></script>
 		<script src="{{ url_for('static', filename='drilldown.js') }} "></script>
