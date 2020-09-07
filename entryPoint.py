@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for
 from flask_cors import CORS
 import API.flaskAPIs as api
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -15,13 +16,6 @@ def index():
 
 @app.route('/submitdata', methods=['POST'])
 def upload_file():
-    allowed_files = ['application/vnd.ms-excel','text/plain','text/csv','text/tsv']
-    uploaded_file = request.files['file']
-    
-    if(uploaded_file.filename == '' or uploaded_file.content_type not in allowed_files):
-        flash("File type not allowed, please upload valid file!")
-        return redirect(url_for("index"))
-    
     return redirect(url_for("render"))
 
 @app.route('/render', methods=['GET'])
@@ -43,4 +37,5 @@ def update_drill():
     return res
 
 if __name__ == "__main__":
+    app.secret_key =  os.urandom(24)
     app.run(host='0.0.0.0')

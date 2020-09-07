@@ -1,76 +1,56 @@
-//DOM
-const $ = document.querySelector.bind(document);
+var fileTypes = ['csv'];  //acceptable file types
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+            isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
 
-//APP
-let App = {};
-App.init = function () {
-  //Init
-  function handleFileSelect(evt) {
-    const files = evt.target.files; // FileList object
+        if (isSuccess) { //yes
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                if (extension == 'csv'){
+					$(input).closest('.fileUpload').find(".icon").attr('src',"/static/csv.svg");
+                	
+                }
+                else {
+                	//console.log('here=>'+$(input).closest('.uploadDoc').length);
+                	$(input).closest('.uploadDoc').find(".docErr").slideUp('slow');
+                }
+            }
 
-    //files template
-    let template = `${Object.keys(files).
-    map(file => `<div class="file file--${file}">
-     <div class="name"><span>${files[file].name}</span></div>
-     <div class="progress active"></div>
-     <div class="done">
-	<a href="" target="_blank">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 1000 1000">
-		<g><path id="path" d="M500,10C229.4,10,10,229.4,10,500c0,270.6,219.4,490,490,490c270.6,0,490-219.4,490-490C990,229.4,770.6,10,500,10z M500,967.7C241.7,967.7,32.3,758.3,32.3,500C32.3,241.7,241.7,32.3,500,32.3c258.3,0,467.7,209.4,467.7,467.7C967.7,758.3,758.3,967.7,500,967.7z M748.4,325L448,623.1L301.6,477.9c-4.4-4.3-11.4-4.3-15.8,0c-4.4,4.3-4.4,11.3,0,15.6l151.2,150c0.5,1.3,1.4,2.6,2.5,3.7c4.4,4.3,11.4,4.3,15.8,0l308.9-306.5c4.4-4.3,4.4-11.3,0-15.6C759.8,320.7,752.7,320.7,748.4,325z"</g>
-		</svg>
-						</a>
-     </div>
-    </div>`).
-    join("")}`;
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+        		//console.log('here=>'+$(input).closest('.uploadDoc').find(".docErr").length);
+            $(input).closest('.uploadDoc').find(".docErr").fadeIn();
+            setTimeout(function() {
+				   	$('.docErr').fadeOut('slow');
+					}, 9000);
+        }
+    }
+}
+$(document).ready(function(){
+   
+   $(document).on('change','.up', function(){
+   	var id = $(this).attr('id'); /* gets the filepath and filename from the input */
+	   var profilePicValue = $(this).val();
+	   var fileNameStart = profilePicValue.lastIndexOf('\\'); /* finds the end of the filepath */
+	   profilePicValue = profilePicValue.substr(fileNameStart + 1).substring(0,20); /* isolates the filename */
+	   //var profilePicLabelText = $(".upl"); /* finds the label text */
+	   if (profilePicValue != '') {
+	   	//console.log($(this).closest('.fileUpload').find('.upl').length);
+	      $(this).closest('.fileUpload').find('.upl').html(profilePicValue); /* changes the label text */
+	   }
+   });
 
-    $("#drop").classList.add("hidden");
-    $("footer").classList.add("hasFiles");
-    $(".importar").classList.add("active");
-    setTimeout(() => {
-      $(".list-files").innerHTML = template;
-    }, 1000);
-
-    Object.keys(files).forEach(file => {
-      let load = 2000 + file * 2000; // fake load
-      setTimeout(() => {
-        $(`.file--${file}`).querySelector(".progress").classList.remove("active");
-        $(`.file--${file}`).querySelector(".done").classList.add("anim");
-      }, load);
-    });
-  }
-
-  // trigger input
-  $("#triggerFile").addEventListener("click", evt => {
-    evt.preventDefault();
-    $("input[type=file]").click();
-  });
-
-  // drop events
-  $("#drop").ondragleave = evt => {
-    $("#drop").classList.remove("active");
-    evt.preventDefault();
-  };
-  $("#drop").ondragover = $("#drop").ondragenter = evt => {
-    $("#drop").classList.add("active");
-    evt.preventDefault();
-  };
-  $("#drop").ondrop = evt => {
-    $("input[type=file]").files = evt.dataTransfer.files;
-    $("footer").classList.add("hasFiles");
-    $("#drop").classList.remove("active");
-    evt.preventDefault();
-  };
-
-  //upload more
-  $(".importar").addEventListener("click", () => {
-    $(".list-files").innerHTML = "";
-    $("footer").classList.remove("hasFiles");
-    $(".importar").classList.remove("active");
-    setTimeout(() => {
-      $("#drop").classList.remove("hidden");
-    }, 500);
-  });
-
-  // input change
-  $("input[type=file]").addEventListener("change", handleFileSelect);
-}();
+   $(".btn-new").on('click',function(){
+        $("#uploader").append('<div class="row uploadDoc"><div class="col-sm-3"><div class="docErr">Please upload valid file</div><!--error--><div class="fileUpload btn btn-orange"> <img src="https://image.flaticon.com/icons/svg/136/136549.svg" class="icon"><span class="upl" id="upload">Upload document</span><input type="file" class="upload up" id="up" onchange="readURL(this);" /></div></div><div class="col-sm-8"><input type="text" class="form-control" name="" placeholder="Note"></div><div class="col-sm-1"><a class="btn-check"><i class="fa fa-times"></i></a></div></div>');
+   });
+    
+   $(document).on("click", "a.btn-check" , function() {
+     if($(".uploadDoc").length>1){
+        $(this).closest(".uploadDoc").remove();
+      }else{
+        alert("You have to upload at least one document.");
+      } 
+   });
+});
