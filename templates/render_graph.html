@@ -3,10 +3,10 @@
 	<head>
 		<script type="text/javascript">
 			var obj = JSON.parse('{{res|safe}}');
+			console.log(obj);
 			var index = obj["index"]
 			var data = obj["res"]
 			var val = obj["currcons"]
-			
 			var addon = {
 				'headerFormat' : '<span style="font-size:11px">{series.name}</span><br>',
 				'pointFormat': '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
@@ -16,7 +16,8 @@
 			
 			window.addEventListener('DOMContentLoaded', function (event) {
 				Highcharts.chart('container', data);
-				document.getElementById("current_slice").text = val;
+				document.getElementById("current_slice").innerHTML = "current slice: " + val;
+				document.getElementById("current_slice").value = val;
 			});
 			
 			function update_graph(obj){
@@ -24,15 +25,17 @@
 				var data = obj["res"];
 				var val = obj["currcons"];
 				
+				console.log(val);
+				
 				var addon = {
 					'headerFormat' : '<span style="font-size:11px">{series.name}</span><br>',
 					'pointFormat': '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
 				}
 				
 				data["tooltip"] = addon;
-				console.log(index);
 				Highcharts.chart('container', data);
-				document.getElementById("current_slice").text = val;
+				document.getElementById("current_slice").innerHTML = "current slice: " + val;
+				document.getElementById("current_slice").value = val;
 			}
 			
 			function ajaxCall(inp){
@@ -69,7 +72,7 @@
 				if(index>0){
 					ajaxCall(index-1);
 				}else{
-					alert("Already on 0, click on next instead!");
+					alert("Already on 1st, click on next instead!");
 					return false;
 				}
 				
@@ -188,8 +191,8 @@
 						background: #f1f7ff;
 					}
 				</style>
-				<a href="" onClick="getPreviousPlot(); return false;" title="Previous (arrow left)" class="previous-example hidden-xs"><i class="fa fa-angle-left"></i></a>
-				<a href="" onClick="getNextPlot(); return false;" title="Next (arrow right)" class="next-example hidden-xs"><i class="fa fa-angle-right"></i></a>
+				<a href="" onClick="getPreviousPlot(); return false;" title="Previous Plot" class="previous-example hidden-xs"><i class="fa fa-angle-left"></i></a>
+				<a href="" onClick="getNextPlot(); return false;" title="Next Plot" class="next-example hidden-xs"><i class="fa fa-angle-right"></i></a>
 
 				<figure class="highcharts-figure">
 					<div 
@@ -202,8 +205,8 @@
 					</div>
 				</figure>
 			</div>
-				<div class="dropdown" style="padding-left:380px ; float:left">
-					<button class="dropbtn" id="current_slice">Current Slice: Drink</button>
+				<div class="dropdown" style="padding-left:340px ; float:left">
+					<button class="dropbtn" id="current_slice"></button>
 				</div>
 				
 				<div class="dropdown" style="margin-left:100px">

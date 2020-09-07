@@ -7,6 +7,7 @@ CORS(app)
 
 allplots = api.read_data()
 drilled_dic = {"SYMPTOMS": "DRINK", "DRINK": "SYMPTOMS", "MEETINGS": "SYMPTOMS"}
+res = api.prepare_response(0, allplots, drilled_dic, "")
 
 @app.route('/', methods=['GET'])
 def index():

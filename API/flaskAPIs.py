@@ -15,7 +15,13 @@ def read_data():
     for index, data in bar_data.iterrows():
         first_attr = data.first_attr
         xcord = data.data
+        
         constraints = json.loads(data.slice)
+        metadata = json.loads(data.metadata)
+        
+        score = metadata[2]
+        support = metadata[3]
+        
         fdata = data_point
         temp = ""
         
@@ -23,17 +29,31 @@ def read_data():
             temp += i + ", "
             fdata = fdata[fdata[i] == j]
         
-        allplots[cnt] = {"first_attr": first_attr, "data": fdata, "xcord" : xcord , "cons":temp}
+        if(temp==""):
+            temp = "No Slices!"
+        else:
+            temp = temp[:-2]
+            
+        allplots[cnt] = {
+            "first_attr": first_attr, 
+            "data": fdata, 
+            "xcord" : xcord , 
+            "cons":temp,
+            "score": score,
+            "support": support
+        }
         cnt += 1
         
     return allplots
 
 def prepare_response(curr, allplots, drilled_dic, pref):
     curr_plot = allplots[curr]
-    
     category = curr_plot["first_attr"]
     curr_data = curr_plot["data"]
     const = curr_plot["cons"]
+    score = curr_plot["score"]
+    support = curr_plot["support"]
+    
     xcord = json.loads(curr_plot["xcord"])
     
     curr_xcord = {}
@@ -98,11 +118,11 @@ def prepare_response(curr, allplots, drilled_dic, pref):
 
     res = {}
     res['chart'] = {'type': 'column'}
-    res['title'] = {'text': category[0]+category[1:].lower() +  ' Frequence Distribution'} 
-    res['subtitle'] = {'text': 'Click on the any column to view further drilldown.'}
+    res['title'] = {'text': 'Frequency Distribution of ' + category[0]+category[1:].lower() + " attribute: " + str(curr+1) + "/" + str(len(allplots))} 
+    res['subtitle'] = {'text': 'Click on the any column to view further drilldown. Score: ' + score + " and support: " + support}
     res['accessibility'] = {'announceNewData': {'enabled': True}}
     res['xAxis'] = {'type':'category'}
-    res['yAxis'] = {'title': {'text' : 'Frequency Distribution of each value of' + category[0]+category[1:].lower() + 'attribute'}}
+    res['yAxis'] = {'title': {'text' : 'Frequency Distribution of each value of ' + category[0]+category[1:].lower() + ' attribute'}}
     res['legend'] = {'enabled': False}
     res['plotOptions'] = {'series' : {'borderWidth' :0, 'dataLabels': {'enabled':True, 'format': '{point.y:.1f}%'}}}
     res['series'] = [{'name':category, 'colorByPoint': True, 'data': first_data}]
@@ -110,4 +130,6 @@ def prepare_response(curr, allplots, drilled_dic, pref):
 
     final_res = {"index":curr, "res":res, "currcons": const}
     final_res = json.dumps(final_res)
+    
+    
     return final_res
