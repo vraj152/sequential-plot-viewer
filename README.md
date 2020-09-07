@@ -11,7 +11,7 @@
 
 * Code Explaination:
   * Backend:
-    * Technologies Used: Python3, Flask, AWS (hosting web application)
+    * Technologies Used: Python3, Flask, AWS (for hosting web application)
     * Helper Methods:
       * [read_data](https://github.com/vraj152/sequential-plot-viewer/blob/9551e3a25a35a9d17814bd11c6ea6e73a9ce0c78/API/flaskAPIs.py#L4):
         * Argument: Graph type (either boxplot or bargraph)
